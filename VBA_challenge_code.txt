@@ -1,0 +1,57 @@
+Sub Stocks()
+Dim ticker_value As String
+Dim vol As Double
+vol = 0
+
+Dim ticker_value_row As String
+Dim yearstart As Double
+Dim yearend As Double
+Dim year As Double
+
+Range("I1").Value = "Ticker"
+Range("J1").Value = "Yearly Change"
+Range("K1").Value = "Yearly Percent"
+Range("L1").Value = "Total Stock Vol"
+
+ticker_value_row = 2
+
+For i = 2 To Rows.Count
+
+If Cells(i - 1, 1).Value <> Cells(i, 1).Value Then
+yearstart = Cells(i, 3).Value
+End If
+
+If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
+yearend = Cells(i, 6).Value
+
+yeardiff = yearend - yearstart
+yearpar = (yearend - yearstart) / yearstart
+vol = vol + Cells(i, 7).Value
+
+Range("I" & ticker_value_row).Value = Cells(i, 1).Value
+Range("J" & ticker_value_row).Value = yeardiff
+Range("K" & ticker_value_row).Value = FormatPercent(yearpar)
+Range("L" & ticker_value_row).Value = vol
+
+ticker_value_row = ticker_value_row + 1
+
+vol = 0
+
+Else
+
+vol = vol + Cells(i, 7).Value
+
+End If
+
+If Range("J" & ticker_value_row).Value < 0 Then
+Range("J" & ticker_value_row).Interior.ColorIndex = 3
+
+Else
+Range("J" & ticker_value_row).Interior.ColorIndex = 4
+
+End If
+
+Next i
+
+End Sub
+
